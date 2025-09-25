@@ -11,7 +11,7 @@ const customFields = {
 
 const verifyCallBack = async (username, password, done) => {
     try {
-        const { rows } = pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
         const user = rows[0];
 
         if (!user) {

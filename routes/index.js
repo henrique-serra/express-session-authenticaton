@@ -57,8 +57,10 @@ router.get('/protected-route', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
-    req.logout();
-    req.redirect('/protected-route');
+    req.logout((err) => {
+        if (err) return next(err);
+        res.redirect('/protected-route');
+    });
 });
 
 router.get('/login-success', (req, res) => {
@@ -66,7 +68,7 @@ router.get('/login-success', (req, res) => {
 });
 
 router.get('/login-failure', (req, res) => {
-    res.send('You entered the wrong password.');
+    res.send(`You entered the wrong password.`);
 });
 
 module.exports = router;
