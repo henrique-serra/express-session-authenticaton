@@ -4,6 +4,7 @@ const passwordUtils = require('../lib/passwordUtils');
 const pool = require('../db/pool');
 const strategy = require('../config/passport');
 const db = require('../db/queries');
+const { isAuth, isAdmin } = require('./authMiddleware');
 
 router.post(
     '/login',
@@ -48,12 +49,12 @@ router.get('/register', (req, res) => {
     res.send(form);
 });
 
-router.get('/protected-route', (req, res) => {
-    if (req.isAuthenticated()) {
-        res.send('<h1>You are authenticated</h1><p><a href="/logout">Logout and reload</a></p>');
-    } else {
-        res.send('<h1>You are not authenticated</h1><p><a href="/login">Login</a></p>');
-    }
+router.get('/protected-route', isAuth, (req, res) => {
+    res.send('You made it to the route');
+});
+
+router.get('/admin-route', isAdmin, (req, res) => {
+    res.send('You made it to the admin route');
 });
 
 router.get('/logout', (req, res) => {
